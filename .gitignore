@@ -29,6 +29,7 @@ Thumbs.db
 data/**/*.cache
 data/**/*.tmp
 data/**/*.log
+data/index/
 
 # Node (for Mermaid CLI cache if any)
 node_modules/

@@ -1,4 +1,6 @@
 import faiss
+import json
+import os
 import numpy as np
 
 
@@ -23,3 +25,25 @@ class VectorStore:
                 results.append(self.metadata[idx])
 
         return results
+
+    def save(self, index_path: str):
+        os.makedirs(os.path.dirname(index_path), exist_ok=True)
+        faiss.write_index(self.index, index_path)
+        meta_path = f"{index_path}.meta.json"
+        with open(meta_path, "w", encoding="utf-8") as f:
+            json.dump(self.metadata, f, ensure_ascii=False)
+
+    @classmethod
+    def load(cls, index_path: str):
+        if not os.path.exists(index_path):
+            return None
+        meta_path = f"{index_path}.meta.json"
+        if not os.path.exists(meta_path):
+            return None
+
+        index = faiss.read_index(index_path)
+        store = cls(embedding_dim=index.d)
+        store.index = index
+        with open(meta_path, "r", encoding="utf-8") as f:
+            store.metadata = json.load(f)
+        return store

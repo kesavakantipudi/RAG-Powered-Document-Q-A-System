@@ -12,12 +12,13 @@ The system supports PDF and TXT documents and demonstrates a complete, modular R
 The system follows a modular RAG architecture:
 
 1. Documents are ingested from disk (PDF / TXT)
-2. Text is split into overlapping chunks
+2. Text is split into overlapping chunks (token-aware when possible)
 3. Each chunk is converted into vector embeddings
-4. FAISS performs semantic similarity search
-5. Top-K relevant chunks are injected into a prompt
-6. A language model generates an answer grounded in retrieved context
-7. Source documents are cited in the final response
+4. FAISS performs semantic similarity search (with optional persisted index)
+5. Optional reranker refines the top candidate chunks
+6. Top-K relevant chunks are injected into a prompt
+7. A language model generates an answer grounded in retrieved context
+8. Source documents are cited in the final response
 
 See [architecture.mmd](architecture.mmd) for a visual representation of the data flow (render with Mermaid). If you prefer a PNG, export this Mermaid file using the Mermaid CLI or VS Code Mermaid extension.
 
@@ -95,6 +96,16 @@ By default, the system attempts to use a local FLAN-T5 model via `transformers`.
 ```
 $env:RAG_USE_TRANSFORMERS = "0"
 python src/test_rag.py
+
+Additional environment toggles:
+
+- `RAG_USE_SENTENCE_TRANSFORMERS=0` to force the lightweight embedding fallback (hash-based; not semantic).
+- `RAG_USE_TOKENIZER=0` to disable token-aware chunking (reverts to char-based chunking).
+- `RAG_USE_RERANKER=1` to enable a cross-encoder reranker (`cross-encoder/ms-marco-MiniLM-L-6-v2`).
+
+Index persistence:
+- A FAISS index is saved to `data/index/faiss.index` (and metadata JSON) on first run. Subsequent runs load it to avoid recomputing embeddings.
+- Delete `data/index/*` to rebuild the index after changing documents or chunking params.
 ```
 
 
