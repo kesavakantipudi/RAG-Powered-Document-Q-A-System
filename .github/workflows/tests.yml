@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests (fallback mode)
+        env:
+          RAG_USE_TRANSFORMERS: "0"
+          RAG_USE_SENTENCE_TRANSFORMERS: "0"
+        run: |
+          python -m src.test_loader
+          python -m src.test_chunking
+          python -m src.test_embeddings
+          python -m src.test_vector_store
+          python -m src.test_rag

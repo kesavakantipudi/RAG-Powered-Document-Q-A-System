@@ -1,0 +1,16 @@
+# Normalize line endings: commit LF, checkout native
+* text=auto
+
+# Explicitly mark common text types
+*.py text
+*.md text
+*.yml text
+*.yaml text
+*.txt text
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary

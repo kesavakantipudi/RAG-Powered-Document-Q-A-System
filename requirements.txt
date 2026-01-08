@@ -1,0 +1,9 @@
+sentence-transformers
+faiss-cpu
+pdfplumber
+openai
+numpy
+tqdm
+python-dotenv
+transformers
+sentencepiece

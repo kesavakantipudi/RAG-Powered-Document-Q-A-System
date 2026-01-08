@@ -1,0 +1,37 @@
+Project Overview
+
+This document describes the setup and dependencies for a Python-based Retrieval-Augmented Generation (RAG) document question answering system.
+
+The system is designed to load documents from multiple formats, including plain text files and PDF files. It processes these documents by splitting them into smaller text chunks with overlap, generating vector embeddings for each chunk, and storing them in a vector database for efficient semantic search.
+
+Core Components
+
+The document loader is responsible for reading text and PDF files from a specified directory. Text files are read directly, while PDF files are processed page by page to extract text content.
+
+The chunking module splits large documents into fixed-size chunks with overlapping text to preserve context across chunk boundaries.
+
+The embedding module uses a pre-trained sentence transformer model to convert text chunks into numerical vectors. These embeddings are used to measure semantic similarity between user queries and document content.
+
+The vector store uses FAISS to perform efficient similarity search over the embeddings and retrieve the most relevant text chunks for a given query.
+
+Question Answering Pipeline
+
+When a user asks a question, the system first generates an embedding for the query. It then retrieves the top-k most relevant chunks from the vector store. These chunks are combined into a prompt along with the user’s question and passed to a language model to generate a final answer.
+
+The language model is instructed to answer strictly based on the retrieved context and to include source citations for transparency.
+
+Dependencies
+
+The system relies on several Python libraries, including:
+
+- sentence-transformers
+- faiss-cpu
+- pdfplumber
+- transformers
+- torch
+- numpy
+- scikit-learn
+
+Evaluation Notes
+
+The system is designed to avoid hallucinations by refusing to answer questions that are not supported by the provided documents. For such cases, it returns a polite message indicating that the required information is not available in the documents.

@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Environments
+.env
+.env.*
+.venv/
+venv/
+
+# Editors/IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Data caches or large files (keep sample small files)
+data/**/*.cache
+data/**/*.tmp
+data/**/*.log
+
+# Node (for Mermaid CLI cache if any)
+node_modules/
+npm-debug.log*
+package-lock.json

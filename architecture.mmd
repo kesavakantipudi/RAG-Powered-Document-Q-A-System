@@ -1,0 +1,27 @@
+%% Mermaid diagram for the RAG pipeline architecture
+flowchart TD
+    A[Documents] --> B[Loaders]
+    B --> C[Chunking]
+    C --> D[Embeddings]
+    D --> E[Vector Store]
+    F[User Question] --> G[Query Embedding]
+    G --> E
+    E --> H[Top-K Retrieval]
+    H --> I[Prompt Builder]
+    I --> J[Generator]
+    J --> K[Answer with Citations]
+
+    subgraph Offline_Indexing
+      B --> C
+      C --> D
+      D --> E
+    end
+
+    subgraph Online_QA
+      F --> G
+      G --> E
+      E --> H
+      H --> I
+      I --> J
+      J --> K
+    end
